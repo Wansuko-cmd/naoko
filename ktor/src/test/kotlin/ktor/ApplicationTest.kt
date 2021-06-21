@@ -1,4 +1,4 @@
-package com.wsr
+package ktor
 
 import io.ktor.routing.*
 import io.ktor.http.*
