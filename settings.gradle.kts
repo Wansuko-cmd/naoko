@@ -8,4 +8,4 @@
  */
 
 rootProject.name = "naoko"
-include("lib")
+include("lib", "ktor")
