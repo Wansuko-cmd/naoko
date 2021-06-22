@@ -18,7 +18,7 @@ fun Application.main(){
 
     val library = Naoko.build(
         apiKey = apiKey,
-        country = "ja"
+        country = "jp"
     )
 
     routing {
@@ -34,7 +34,7 @@ fun Application.main(){
             val result = withContext(Dispatchers.Default){
                 library.getResult(country)
             }
-            call.respondText(result.toString())
+            call.respondText(result.code ?: result.status)
         }
     }
 }
