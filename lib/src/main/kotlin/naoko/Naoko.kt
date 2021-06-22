@@ -7,29 +7,33 @@ import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import naoko.entities.json.news.News
 
-class Naoko(private val apiKey: String) {
+class Naoko(private val config: NaokoConfig) {
 
     private val client = HttpClient(CIO){
         install(JsonFeature){
             serializer = KotlinxSerializer(
                 kotlinx.serialization.json.Json {
                     ignoreUnknownKeys = true
+                    coerceInputValues = true
                 }
             )
         }
     }
 
-    suspend fun getResult(): Int = withContext(Dispatchers.IO){
+    suspend fun getResult(country: String? = null): News = withContext(Dispatchers.IO) {
 
         //動作確認をするときはi10janのurlを入れる
-        val result = client.get<News>("https://newsapi.org/v2/top-headlines?country=jp&apiKey=$apiKey")
-        return@withContext result.totalResults
+        return@withContext client.get<News>(
+            "https://newsapi.org/v2/top-headlines?country=${country ?:config.country}&apiKey=${config.apiKey}"
+        )
     }
 
     companion object{
-        fun build(apiKey: String): Naoko{
-            return Naoko(apiKey)
+        fun build(apiKey: String, country: String = "jp"): Naoko{
+            val config = NaokoConfig(apiKey, country)
+            return Naoko(config)
         }
     }
 }

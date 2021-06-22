@@ -5,8 +5,8 @@ import io.ktor.application.*
 import io.ktor.config.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import kotlinx.coroutines.async
-import naoko.Library
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import naoko.Naoko
 
 fun main(args: Array<String>) = io.ktor.server.netty.EngineMain.main(args)
@@ -16,15 +16,25 @@ fun Application.main(){
     val appConfig = HoconApplicationConfig(ConfigFactory.load())
     val apiKey = appConfig.property("news_api_key").getString()
 
-    val library = Naoko.build(apiKey)
+    val library = Naoko.build(
+        apiKey = apiKey,
+        country = "ja"
+    )
 
     routing {
         get("/"){
-            val result = async {
+            val result = withContext(Dispatchers.Default) {
                 library.getResult()
             }
-            proceed()
-            call.respondText(result.await().toString())
+            call.respondText(result.toString())
+        }
+
+        get("/{country}"){
+            val country = call.parameters["country"]
+            val result = withContext(Dispatchers.Default){
+                library.getResult(country)
+            }
+            call.respondText(result.toString())
         }
     }
 }
