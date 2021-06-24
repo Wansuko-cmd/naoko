@@ -34,7 +34,7 @@ fun Application.main(){
             val result = withContext(Dispatchers.Default){
                 library.getResult(country)
             }
-            call.respondText(result.code ?: result.status)
+            call.respondText(result.toString())
         }
     }
 }

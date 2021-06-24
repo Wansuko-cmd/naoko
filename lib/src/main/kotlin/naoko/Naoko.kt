@@ -1,37 +1,33 @@
 package naoko
 
-import io.ktor.client.*
-import io.ktor.client.engine.cio.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
-import io.ktor.client.request.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import naoko.entities.json.news.News
 
 class Naoko(private val config: NaokoConfig) {
 
-    private val client = HttpClient(CIO){
-        install(JsonFeature){
-            serializer = KotlinxSerializer(
-                kotlinx.serialization.json.Json {
-                    ignoreUnknownKeys = true
-                    coerceInputValues = true
-                }
-            )
-        }
-    }
+    private val naokoRepository = NaokoRepository(config.apiKey)
 
-    suspend fun getResult(country: String? = null): News = withContext(Dispatchers.IO) {
 
-        //動作確認をするときはi10janのurlを入れる
-        return@withContext client.get<News>(
-            "https://newsapi.org/v2/top-headlines?country=${country ?:config.country}&apiKey=${config.apiKey}"
+    suspend fun getTopHeadlines(
+        country: String? = config.country,
+        category: String? = null,
+        q: String? = null,
+        pageSize: Int? = null,
+        page: Int? = null
+    ): News {
+
+        val parameters = mapOf(
+            "country" to (country),
+            "category" to category,
+            "q" to q,
+            "pageSize" to pageSize?.toString(),
+            "page" to page?.toString()
         )
+
+        return naokoRepository.getTopHeadlines(parameters)
     }
 
     companion object{
-        fun build(apiKey: String, country: String = "jp"): Naoko{
+        fun build(apiKey: String, country: String = "us"): Naoko{
             val config = NaokoConfig(apiKey, country)
             return Naoko(config)
         }
