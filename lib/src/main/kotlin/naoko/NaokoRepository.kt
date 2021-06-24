@@ -7,6 +7,7 @@ import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
+import io.ktor.http.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import naoko.entities.json.news.News
@@ -27,7 +28,7 @@ internal class NaokoRepository(private val apiKey: String) {
 
 
 
-    suspend fun getEverything(parameters: Map<String, String?>): News = withAPIErrorHandler{
+    suspend fun getEverything(parameters: Map<String, String?>): News = withAPIErrorHandler {
 
         return@withAPIErrorHandler client.get<News>(
             "https://newsapi.org/v2/everything"
@@ -35,6 +36,21 @@ internal class NaokoRepository(private val apiKey: String) {
             parameter("apiKey", apiKey)
 
             parameters.forEach { (key, value) ->
+                parameter(key, value)
+            }
+        }
+    }
+
+
+
+    suspend fun getSources(parameters: Map<String, String?>): News = withAPIErrorHandler {
+
+        return@withAPIErrorHandler client.get<News>(
+            "https://newsapi.org/v2/sources"
+        ){
+            parameter("apiKey", apiKey)
+
+            parameters.forEach{ (key, value) ->
                 parameter(key, value)
             }
         }
@@ -65,7 +81,7 @@ internal class NaokoRepository(private val apiKey: String) {
 
         }catch (e: ClientRequestException){
             when(e.response.status.value){
-                400 -> TODO("The request was unacceptable, often due to a missing or misconfigured parameter.")
+//                400 -> TODO("The request was unacceptable, often due to a missing or misconfigured parameter.")
                 401 -> throw AuthenticationException(
                     "You may miss your api key. News API return: ${e.response.readText()}"
                 )

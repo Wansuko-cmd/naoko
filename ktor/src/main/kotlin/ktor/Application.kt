@@ -16,7 +16,7 @@ fun Application.main(){
     val appConfig = HoconApplicationConfig(ConfigFactory.load())
     val apiKey = appConfig.property("news_api_key").getString()
 
-    val library = Naoko.build(
+    val naoko = Naoko.build(
         apiKey = apiKey,
         country = "jp"
     )
@@ -24,7 +24,36 @@ fun Application.main(){
     routing {
         get("/"){
             val result = withContext(Dispatchers.Default) {
-                library.getResult()
+                naoko.getTopHeadlines()
+            }
+            call.respondText(result.toString())
+        }
+
+        get("/top"){
+            val result = withContext(Dispatchers.Default) {
+                naoko.getTopHeadlines()
+            }
+            call.respondText(result.toString())
+        }
+
+        get("/every") {
+            val result = withContext(Dispatchers.Default) {
+                naoko.getEverything()
+            }
+            call.respondText(result.toString())
+        }
+
+        get("/every/{q}"){
+            val q = call.parameters["q"]
+            val result = withContext(Dispatchers.Default) {
+                naoko.getEverything(q = q)
+            }
+            call.respondText(result.toString())
+        }
+
+        get("/sources"){
+            val result = withContext(Dispatchers.Default) {
+                naoko.getSources()
             }
             call.respondText(result.toString())
         }
@@ -32,7 +61,7 @@ fun Application.main(){
         get("/{country}"){
             val country = call.parameters["country"]
             val result = withContext(Dispatchers.Default){
-                library.getResult(country)
+                naoko.getTopHeadlines(country = country)
             }
             call.respondText(result.toString())
         }
