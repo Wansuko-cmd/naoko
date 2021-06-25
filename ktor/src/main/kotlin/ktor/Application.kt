@@ -8,6 +8,7 @@ import io.ktor.routing.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import naoko.Naoko
+import naoko.entities.enum.Country
 
 fun main(args: Array<String>) = io.ktor.server.netty.EngineMain.main(args)
 
@@ -18,7 +19,7 @@ fun Application.main(){
 
     val naoko = Naoko.build(
         apiKey = apiKey,
-        country = "jp"
+        country = Country.JP
     )
 
     routing {

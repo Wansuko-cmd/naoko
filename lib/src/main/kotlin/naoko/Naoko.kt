@@ -1,12 +1,16 @@
 package naoko
 
+import naoko.entities.enum.Country
+import naoko.entities.enum.Language
 import naoko.entities.json.news.News
 
 class Naoko(private val config: NaokoConfig) {
 
+    //通信を行うインスタンス
     private val naokoRepository = NaokoRepository(config.apiKey)
 
 
+    //https://newsapi.org/docs/endpoints/everything
     suspend fun getEverything(
         q: String? = null,
         qInTitle: String? = null,
@@ -15,7 +19,7 @@ class Naoko(private val config: NaokoConfig) {
         excludeDomains: String? = null,
         from: String? = null,
         to: String? = null,
-        language: String? = null,
+        language: Language? = null,
         sortBy: String? = null,
         pageSize: Int? = null,
         page: Int? = null
@@ -29,7 +33,7 @@ class Naoko(private val config: NaokoConfig) {
             "excludeDomains" to excludeDomains,
             "from" to from,
             "to" to to,
-            "language" to language,
+            "language" to language?.value,
             "sortBy" to sortBy,
             "pageSize" to pageSize?.toString(),
             "page" to page?.toString()
@@ -39,6 +43,7 @@ class Naoko(private val config: NaokoConfig) {
     }
 
 
+    //https://newsapi.org/docs/endpoints/sources
     suspend fun getSources(
         category: String? = null,
         language: String? = null,
@@ -54,8 +59,9 @@ class Naoko(private val config: NaokoConfig) {
     }
 
 
+    //https://newsapi.org/docs/endpoints/top-headlines
     suspend fun getTopHeadlines(
-        country: String? = config.country,
+        country: String? = config.country.value,
         category: String? = null,
         q: String? = null,
         pageSize: Int? = null,
@@ -74,6 +80,7 @@ class Naoko(private val config: NaokoConfig) {
     }
 
 
+    //https://newsapi.org/docs/endpoints/top-headlines
     suspend fun getTopHeadlines(
         sources: String,
         q: String? = null,
@@ -93,7 +100,7 @@ class Naoko(private val config: NaokoConfig) {
 
 
     companion object{
-        fun build(apiKey: String, country: String = "us"): Naoko{
+        fun build(apiKey: String, country: Country = Country.US): Naoko {
             val config = NaokoConfig(apiKey, country)
             return Naoko(config)
         }
