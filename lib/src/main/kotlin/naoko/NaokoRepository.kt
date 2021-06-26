@@ -74,10 +74,10 @@ internal class NaokoRepository(private val apiKey: String) {
 
 
     //API通信の際のエラーハンドラーをセットする関数
-    private suspend fun <T> withAPIErrorHandler(func: suspend () -> T): T = withContext(Dispatchers.IO) {
+    private suspend fun <T> withAPIErrorHandler(block: suspend () -> T): T = withContext(Dispatchers.IO) {
 
         try {
-            return@withContext func()
+            return@withContext block()
 
         }catch (e: ClientRequestException){
             when(e.response.status.value){
