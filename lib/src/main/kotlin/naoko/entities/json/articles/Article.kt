@@ -1,4 +1,4 @@
-package naoko.entities.json.news
+package naoko.entities.json.articles
 
 import kotlinx.serialization.Serializable
 

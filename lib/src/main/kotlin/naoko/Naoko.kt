@@ -4,7 +4,8 @@ import naoko.entities.enum.Category
 import naoko.entities.enum.Country
 import naoko.entities.enum.Language
 import naoko.entities.enum.SortBy
-import naoko.entities.json.news.News
+import naoko.entities.json.articles.NaokoArticles
+import naoko.entities.json.sources.NaokoSources
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -27,7 +28,7 @@ class Naoko(private val config: NaokoConfig) {
         sortBy: SortBy? = null,
         pageSize: Int? = null,
         page: Int? = null
-    ): News {
+    ): NaokoArticles {
 
         val parameters = mapOf(
             "q" to q,
@@ -54,12 +55,12 @@ class Naoko(private val config: NaokoConfig) {
     //https://newsapi.org/docs/endpoints/sources
     suspend fun getSources(
         category: Category? = null,
-        language: String? = null,
+        language: Language? = null,
         country: Country? = null
-    ): News {
+    ): NaokoSources{
         val parameters = mapOf(
             "category" to category?.value,
-            "language" to language,
+            "language" to language?.value,
             "country" to country?.value
         )
 
@@ -74,7 +75,7 @@ class Naoko(private val config: NaokoConfig) {
         q: String? = null,
         pageSize: Int? = null,
         page: Int? = null
-    ): News {
+    ): NaokoArticles {
 
         val parameters = mapOf(
             "country" to country?.value,
@@ -94,7 +95,7 @@ class Naoko(private val config: NaokoConfig) {
         q: String? = null,
         pageSize: Int? = null,
         page: Int? = null
-    ): News {
+    ): NaokoArticles {
         val parameters = mapOf(
             "sources" to sources,
             "q" to q,

@@ -7,10 +7,10 @@ import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
-import io.ktor.http.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import naoko.entities.json.news.News
+import naoko.entities.json.articles.NaokoArticles
+import naoko.entities.json.sources.NaokoSources
 import javax.naming.AuthenticationException
 
 internal class NaokoRepository(private val apiKey: String) {
@@ -28,9 +28,9 @@ internal class NaokoRepository(private val apiKey: String) {
 
 
 
-    suspend fun getEverything(parameters: Map<String, String?>): News = withAPIErrorHandler {
+    suspend fun getEverything(parameters: Map<String, String?>): NaokoArticles = withAPIErrorHandler {
 
-        return@withAPIErrorHandler client.get<News>(
+        return@withAPIErrorHandler client.get<NaokoArticles>(
             "https://newsapi.org/v2/everything"
         ){
             parameter("apiKey", apiKey)
@@ -43,9 +43,9 @@ internal class NaokoRepository(private val apiKey: String) {
 
 
 
-    suspend fun getSources(parameters: Map<String, String?>): News = withAPIErrorHandler {
+    suspend fun getSources(parameters: Map<String, String?>): NaokoSources = withAPIErrorHandler {
 
-        return@withAPIErrorHandler client.get<News>(
+        return@withAPIErrorHandler client.get<NaokoSources>(
             "https://newsapi.org/v2/sources"
         ){
             parameter("apiKey", apiKey)
@@ -58,9 +58,9 @@ internal class NaokoRepository(private val apiKey: String) {
 
 
 
-    suspend fun getTopHeadlines(parameters: Map<String, String?>): News = withAPIErrorHandler {
+    suspend fun getTopHeadlines(parameters: Map<String, String?>): NaokoArticles = withAPIErrorHandler {
 
-        return@withAPIErrorHandler client.get<News>(
+        return@withAPIErrorHandler client.get<NaokoArticles>(
             "https://newsapi.org/v2/top-headlines"
         ){
             parameter("apiKey", apiKey)
