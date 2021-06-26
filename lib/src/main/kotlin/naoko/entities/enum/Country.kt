@@ -54,5 +54,66 @@ enum class Country(val value: String) {
     UA("ua"),
     US("us"),
     VE("ve"),
-    ZA("za")
+    ZA("za");
+
+    companion object{
+        fun serializer(country: String): Country = when(country){
+            "ae" -> AE
+            "ar" -> AR
+            "at" -> AT
+            "au" -> AU
+            "be" -> BE
+            "bg" -> BG
+            "br" -> BR
+            "ca" -> CA
+            "ch" -> CH
+            "cn" -> CN
+            "co" -> CO
+            "cu" -> CU
+            "cz" -> CZ
+            "de" -> DE
+            "eg" -> EG
+            "fr" -> FR
+            "gb" -> GB
+            "gr" -> GR
+            "hk" -> HK
+            "hu" -> HU
+            "id" -> ID
+            "ie" -> IE
+            "il" -> IL
+            "in" -> IN
+            "it" -> IT
+            "jp" -> JP
+            "kr" -> KR
+            "lt" -> LT
+            "lv" -> LV
+            "ma" -> MA
+            "mx" -> MX
+            "my" -> MY
+            "ng" -> NG
+            "nl" -> NL
+            "no" -> NO
+            "nz" -> NZ
+            "ph" -> PH
+            "pl" -> PL
+            "pt" -> PT
+            "ro" -> RO
+            "rs" -> RS
+            "ru" -> RU
+            "sa" -> SA
+            "se" -> SE
+            "sg" -> SG
+            "si" -> SI
+            "sk" -> SK
+            "th" -> TH
+            "tr" -> TR
+            "tw" -> TW
+            "ua" -> UA
+            "us" -> US
+            "ve" -> VE
+            "za" -> ZA
+
+            else  -> throw Exception("No Country Found witch correspond to $country")
+        }
+    }
 }

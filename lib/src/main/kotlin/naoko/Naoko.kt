@@ -1,5 +1,6 @@
 package naoko
 
+import naoko.entities.enum.Category
 import naoko.entities.enum.Country
 import naoko.entities.enum.Language
 import naoko.entities.json.news.News
@@ -45,14 +46,14 @@ class Naoko(private val config: NaokoConfig) {
 
     //https://newsapi.org/docs/endpoints/sources
     suspend fun getSources(
-        category: String? = null,
+        category: Category? = null,
         language: String? = null,
-        country: String? = null
+        country: Country? = null
     ): News {
         val parameters = mapOf(
-            "country" to country,
+            "category" to category?.value,
             "language" to language,
-            "category" to category,
+            "country" to country?.value
         )
 
         return naokoRepository.getSources(parameters)
@@ -61,16 +62,16 @@ class Naoko(private val config: NaokoConfig) {
 
     //https://newsapi.org/docs/endpoints/top-headlines
     suspend fun getTopHeadlines(
-        country: String? = config.country.value,
-        category: String? = null,
+        country: Country? = config.country,
+        category: Category? = null,
         q: String? = null,
         pageSize: Int? = null,
         page: Int? = null
     ): News {
 
         val parameters = mapOf(
-            "country" to country,
-            "category" to category,
+            "country" to country?.value,
+            "category" to category?.value,
             "q" to q,
             "pageSize" to pageSize?.toString(),
             "page" to page?.toString()

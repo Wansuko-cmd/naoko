@@ -8,6 +8,7 @@ import io.ktor.routing.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import naoko.Naoko
+import naoko.entities.enum.Category
 import naoko.entities.enum.Country
 
 fun main(args: Array<String>) = io.ktor.server.netty.EngineMain.main(args)
@@ -25,14 +26,37 @@ fun Application.main(){
     routing {
         get("/"){
             val result = withContext(Dispatchers.Default) {
-                naoko.getTopHeadlines()
+                naoko.getTopHeadlines(
+                    country = Country.US
+                )
             }
             call.respondText(result.toString())
         }
 
         get("/top"){
+
             val result = withContext(Dispatchers.Default) {
-                naoko.getTopHeadlines()
+                naoko.getTopHeadlines(
+                    sources = "bbc-news"
+//                    country = Country.JP,
+//                    category = Category.BUSINESS,
+//                    pageSize = 1,
+//                    page = 3
+                )
+            }
+            call.respondText(result.toString())
+        }
+
+        get("/top/{q}"){
+            val q = call.parameters["q"]
+
+            val result = withContext(Dispatchers.Default) {
+                naoko.getTopHeadlines(
+                    country = Country.JP,
+                    category = Category.BUSINESS,
+                    q = q,
+                    pageSize = 100
+                )
             }
             call.respondText(result.toString())
         }
@@ -62,7 +86,9 @@ fun Application.main(){
         get("/{country}"){
             val country = call.parameters["country"]
             val result = withContext(Dispatchers.Default){
-                naoko.getTopHeadlines(country = country)
+                naoko.getTopHeadlines(
+                    country = country?.let { Country.serializer(it) }
+                )
             }
             call.respondText(result.toString())
         }
