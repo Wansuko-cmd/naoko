@@ -3,7 +3,10 @@ package naoko
 import naoko.entities.enum.Category
 import naoko.entities.enum.Country
 import naoko.entities.enum.Language
+import naoko.entities.enum.SortBy
 import naoko.entities.json.news.News
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class Naoko(private val config: NaokoConfig) {
 
@@ -16,12 +19,12 @@ class Naoko(private val config: NaokoConfig) {
         q: String? = null,
         qInTitle: String? = null,
         sources: String? = null,
-        domains: String? = null,
-        excludeDomains: String? = null,
-        from: String? = null,
-        to: String? = null,
+        domains: List<String>? = null,
+        excludeDomains: List<String>? = null,
+        from: LocalDateTime? = null,
+        to: LocalDateTime? = null,
         language: Language? = null,
-        sortBy: String? = null,
+        sortBy: SortBy? = null,
         pageSize: Int? = null,
         page: Int? = null
     ): News {
@@ -30,12 +33,16 @@ class Naoko(private val config: NaokoConfig) {
             "q" to q,
             "qInTitle" to qInTitle,
             "sources" to sources,
-            "domains" to domains,
-            "excludeDomains" to excludeDomains,
-            "from" to from,
-            "to" to to,
+            "domains" to domains?.reduce{tmp, value ->
+                "$tmp,$value"
+            },
+            "excludeDomains" to excludeDomains?.reduce{tmp, value ->
+                "$tmp,$value"
+            },
+            "from" to from?.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+            "to" to to?.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
             "language" to language?.value,
-            "sortBy" to sortBy,
+            "sortBy" to sortBy?.value,
             "pageSize" to pageSize?.toString(),
             "page" to page?.toString()
         )
@@ -97,7 +104,6 @@ class Naoko(private val config: NaokoConfig) {
 
         return naokoRepository.getEverything(parameters)
     }
-
 
 
     companion object{
