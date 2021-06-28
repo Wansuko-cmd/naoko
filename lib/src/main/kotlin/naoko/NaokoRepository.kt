@@ -80,15 +80,14 @@ internal class NaokoRepository(private val apiKey: String) {
             return@withContext block()
 
         }catch (e: ClientRequestException){
-            when(e.response.status.value){
-//                400 -> TODO("The request was unacceptable, often due to a missing or misconfigured parameter.")
-                401 -> throw AuthenticationException(
-                    "You may miss your api key. News API return: ${e.response.readText()}"
-                )
-                429 -> TODO("制限オーバー")
-                500 -> TODO("News API側がエラー起こした")
+            val message = when(e.response.status.value){
+                400 -> "The request was unacceptable, often due to a missing or misconfigured parameter."
+                401 -> "You may miss your api key."
+                429 -> "You made too many requests within a window of time and have been rate limited. Back off for a while."
+                500 -> "An error may occurred on the News API server."
+                else -> "Status Code: ${e.response.status.value}, News API return: ${e.response.readText()}"
             }
-            throw Exception("Status Code: ${e.response.status.value}, News API return: ${e.response.readText()}")
+            throw NaokoException(message, e.response.readText())
         }
     }
 }

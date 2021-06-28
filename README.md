@@ -388,3 +388,27 @@ runBlocking{
 
 この際、入れる文字列は、指定したい値を小文字にしたもの（CategoryのBUSINESSを指定したいなら`Category.serializer("business")`）
 のように指定してください
+
+
+## Error
+
+Naokoで通信を行った際にエラー（正しい値をNews API側に渡していない、有効なAPI KEYが設定されていないなど）
+が発生した場合、`NaokoException`が投げられます。
+
+```kotlin
+
+/**
+ * message: 考えられるエラー原因
+ * response: News API側が返してきたJson
+ */
+class NaokoException(message: String, response: String) : Exception()
+```
+
+したがってこのライブラリを利用する際にはこのエラーのハンドリングも行うことをお勧めします。
+
+
+## 使用した技術
+
+Ktor Client
+
+Kotlinx.serialization
