@@ -7,6 +7,7 @@
  */
 
 val ktor_version: String by project
+val mavenRepository: String by project
 
 plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
@@ -16,6 +17,26 @@ plugins {
 
     // Apply the java-library plugin for API and implementation separation.
     `java-library`
+
+    `maven-publish`
+}
+
+publishing{
+    publications{
+        create<MavenPublication>("maven"){
+            groupId = "com.wsr"
+            artifactId = "naoko"
+            version = "1.0"
+
+            from(components["java"])
+        }
+    }
+
+    repositories{
+        maven {
+            url = uri(mavenRepository)
+        }
+    }
 }
 
 repositories {
