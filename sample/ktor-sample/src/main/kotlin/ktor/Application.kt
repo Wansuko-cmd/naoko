@@ -76,7 +76,7 @@ fun Application.main(){
             val result = withContext(Dispatchers.Default) {
                 naoko.getEverything(
                     qInTitle = q,
-                    domains = listOf("bbc.co.uk"),
+                    domains = listOf("techcrunch.com"),
                     to = LocalDateTime.parse("2021-06-15T21:30:50"),
                     sortBy = SortBy.RELEVANCY
                 )

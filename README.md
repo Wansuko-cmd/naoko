@@ -9,7 +9,22 @@ Naokoとは、News APIをKotlinで使うためのライブラリで、
 
 ## 使い方
 
-### 1. Gradle等に記述
+### 1. build.gradleやMavenに記述（例はbuild.gradle.kts）
+
+```kotlin
+
+repositories{
+    //このライブラリが保存されているMavenリポジトリを登録
+    maven { url = uri("https://wansuko-cmd.github.io/maven/") }   
+}
+
+dependensies{
+    
+    //依存関係を定義
+    implementation("com.wsr:naoko:1.0")
+}
+
+```
 
 ### 2. Naokoのインスタンスを作成
 

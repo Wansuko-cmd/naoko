@@ -1,5 +1,7 @@
 package naoko.entities.enum
 
+import naoko.NaokoException
+
 enum class Language(val value: String) {
     AR("ar"),
     DE("de"),
@@ -33,7 +35,10 @@ enum class Language(val value: String) {
             "ud" -> UD
             "zh" -> ZH
 
-            else -> Exception("No Language Found which correspond to $language")
+            else -> NaokoException(
+                "No Language Found which correspond to $language",
+                "Respond by Language Enum"
+             )
         }
     }
 }

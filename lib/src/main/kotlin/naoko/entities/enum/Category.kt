@@ -1,5 +1,7 @@
 package naoko.entities.enum
 
+import naoko.NaokoException
+
 enum class Category(val value: String) {
 
     BUSINESS("business"),
@@ -20,7 +22,10 @@ enum class Category(val value: String) {
             "sports" -> SPORTS
             "technology" -> TECHNOLOGY
 
-            else -> throw Exception("No Category Found witch correspond to $category")
+            else -> throw NaokoException(
+                "No Category Found witch correspond to $category",
+                "Response by Category Enum class"
+            )
         }
     }
 }
