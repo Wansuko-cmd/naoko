@@ -1,6 +1,7 @@
 package naoko.entities.enum
 
-import naoko.NaokoException
+import naoko.exception.NaokoException
+import naoko.exception.NaokoExceptionStatus
 
 enum class Category(val value: String) {
 
@@ -24,7 +25,8 @@ enum class Category(val value: String) {
 
             else -> throw NaokoException(
                 "No Category Found witch correspond to $category",
-                "Response by Category Enum class"
+                "Response by Category Enum class",
+                NaokoExceptionStatus.SERIALIZER_CATEGORY
             )
         }
     }

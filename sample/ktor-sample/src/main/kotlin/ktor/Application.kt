@@ -11,6 +11,8 @@ import naoko.Naoko
 import naoko.entities.enum.Category
 import naoko.entities.enum.Country
 import naoko.entities.enum.SortBy
+import naoko.exception.NaokoException
+import naoko.exception.NaokoExceptionStatus
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
@@ -29,9 +31,23 @@ fun Application.main(){
     routing {
         get("/"){
             val result = withContext(Dispatchers.Default) {
-                naoko.getTopHeadlines(
-                    country = Country.US
-                )
+                try{
+                    naoko.getTopHeadlines(
+                        country = Country.US
+                    )
+                }
+                catch (e: NaokoException){
+
+                    call.respondText(
+                        when(e.status){
+                            NaokoExceptionStatus.RESPONSE_400 -> ""
+                            NaokoExceptionStatus.RESPONSE_401 -> "I may missed our API Key, please wait"
+                            else -> ""
+                        }
+                    )
+
+                }
+
             }
             call.respondText(result.toString())
         }

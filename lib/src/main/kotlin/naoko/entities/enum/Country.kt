@@ -1,6 +1,7 @@
 package naoko.entities.enum
 
-import naoko.NaokoException
+import naoko.exception.NaokoException
+import naoko.exception.NaokoExceptionStatus
 
 enum class Country(val value: String) {
     AE("ae"),
@@ -117,7 +118,8 @@ enum class Country(val value: String) {
 
             else  -> throw NaokoException(
                 "No Country Found witch correspond to $country",
-                "Respond by Country Enum class"
+                "Respond by Country Enum class",
+                NaokoExceptionStatus.SERIALIZER_COUNTRY
             )
         }
     }

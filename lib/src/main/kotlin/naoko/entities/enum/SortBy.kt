@@ -1,6 +1,7 @@
 package naoko.entities.enum
 
-import naoko.NaokoException
+import naoko.exception.NaokoException
+import naoko.exception.NaokoExceptionStatus
 
 enum class SortBy(val value: String) {
     RELEVANCY("relevancy"),
@@ -14,7 +15,8 @@ enum class SortBy(val value: String) {
             "published_at" -> PUBLISHED_AT
             else -> throw NaokoException(
                 "No SortBy Found which correspond to $sortBy",
-                "Respond by SortBy Enum"
+                "Respond by SortBy Enum",
+                NaokoExceptionStatus.SERIALIZER_SORTBY
             )
         }
     }

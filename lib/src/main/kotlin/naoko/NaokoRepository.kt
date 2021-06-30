@@ -11,7 +11,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import naoko.entities.json.articles.NaokoArticles
 import naoko.entities.json.sources.NaokoSources
-import javax.naming.AuthenticationException
+import naoko.exception.NaokoException
+import naoko.exception.NaokoExceptionStatus
 
 internal class NaokoRepository(private val apiKey: String) {
 
@@ -80,14 +81,39 @@ internal class NaokoRepository(private val apiKey: String) {
             return@withContext block()
 
         }catch (e: ClientRequestException){
-            val message = when(e.response.status.value){
-                400 -> "The request was unacceptable, often due to a missing or misconfigured parameter."
-                401 -> "You may miss your api key."
-                429 -> "You made too many requests within a window of time and have been rate limited. Back off for a while."
-                500 -> "An error may occurred on the News API server."
-                else -> "Status Code: ${e.response.status.value}, News API return: ${e.response.readText()}"
+            val (message, status) = when(e.response.status.value){
+
+                400 ->
+                    Pair(
+                        "The request was unacceptable, often due to a missing or misconfigured parameter.",
+                        NaokoExceptionStatus.RESPONSE_400
+                    )
+
+                401 ->
+                    Pair(
+                        "You may miss your api key.",
+                        NaokoExceptionStatus.RESPONSE_401
+                    )
+
+                429 ->
+                    Pair(
+                        "You made too many requests within a window of time and have been rate limited. Back off for a while.",
+                        NaokoExceptionStatus.RESPONSE_429
+                    )
+
+                500 ->
+                    Pair(
+                        "An error may occurred on the News API server.",
+                        NaokoExceptionStatus.RESPONSE_500
+                    )
+
+                else ->
+                    Pair(
+                        "Status Code: ${e.response.status.value}, News API return: ${e.response.readText()}",
+                        NaokoExceptionStatus.UNDEFINED
+                    )
             }
-            throw NaokoException(message, e.response.readText())
+            throw NaokoException(message, e.response.readText(), status)
         }
     }
 }
