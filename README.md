@@ -411,16 +411,54 @@ Naokoで通信を行った際にエラー（正しい値をNews API側に渡し�
 が発生した場合、`NaokoException`が投げられます。
 
 ```kotlin
-
 /**
  * message: 考えられるエラー原因
  * response: News API側が返してきたJson
+ * status: エラーの内容
  */
-class NaokoException(message: String, response: String) : Exception()
+class NaokoException(
+    message: String,
+    response: String,
+    status: NaokoExceptionStatus
+) : Exception()
 ```
 
 したがってこのライブラリを利用する際にはこのエラーのハンドリングも行うことをお勧めします。
 
+また、`status`は、NaokoExceptionが起きた原因をEnumを用いて分けています。
+エラーハンドリングを行う際はこの値に基づいて処理を分けてください
+
+Enumの内容は以下の通りです。
+
+Serializer関連
+
+Enum型において用意してある、文字列からEnum型に変換する関数`serializer`において
+適した値が見つからなかった場合にこのステータスが割り振られます
+
+| 名称 | 説明 |
+|----|----|
+| SERIALIZER_CATEGORY | Categoryクラス |
+| SERIALIZER_COUNTRY | Countryクラス |
+| SERIALIZER_LANGUAGE | Languageクラス |
+| SERIALIZER_SORTBY | SortByクラス |
+
+
+
+Http通信関連
+
+Http通信に失敗した際の、よく起きるステータスコードを分けています。
+
+詳しくはこちらを確認してください
+
+https://newsapi.org/docs/errors
+
+| 名称 | 説明 |
+|----|----|
+| RESPONSE_400| 400エラーが起きた時で、大体の場合が、指定した値がおかしいときに発生 |
+| RESPONSE_401 | 401エラーで、API KEYが違うときに発生 |
+| RESPONSE_429 | 429エラーで、一日に使用可能な回数を超えてしまったときに発生 |
+| RESPONSE_500 | 500エラーで、News API側のサーバーがエラーを吐いたときに発生 |
+| UNDEFINED | 上記以外のステータスコード。詳しくは`response`を確認すること |
 
 ## 使用した技術
 
