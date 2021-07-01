@@ -26,7 +26,7 @@ publishing{
         create<MavenPublication>("maven"){
             groupId = "com.wsr"
             artifactId = "naoko"
-            version = "1.0"
+            version = "1.0.1"
 
             from(components["java"])
         }

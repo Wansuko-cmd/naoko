@@ -5,8 +5,6 @@
 Naokoとは、News APIをKotlinで使うためのライブラリで、
 `News Api wrapper fOr KOtlin.`の略称です。
 
-
-
 ## 使い方
 
 ### 1. build.gradleやMavenに記述（例はbuild.gradle.kts）
@@ -21,7 +19,7 @@ repositories{
 dependensies{
     
     //依存関係を定義
-    implementation("com.wsr:naoko:1.0")
+    implementation("com.wsr:naoko:1.0.1")
 }
 
 ```
@@ -459,6 +457,14 @@ https://newsapi.org/docs/errors
 | RESPONSE_429 | 429エラーで、一日に使用可能な回数を超えてしまったときに発生 |
 | RESPONSE_500 | 500エラーで、News API側のサーバーがエラーを吐いたときに発生 |
 | UNDEFINED | 上記以外のステータスコード。詳しくは`response`を確認すること |
+
+## 最後に
+
+バグなどありましたらissueの方に投げていただけたら幸いです。
+
+まだこちらのライブラリは開発したばかりであり、破壊的な変更がされる可能性があります。
+
+よろしくお願いいたします。
 
 ## 使用した技術
 
