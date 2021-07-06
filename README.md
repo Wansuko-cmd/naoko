@@ -5,6 +5,8 @@
 Naokoとは、News APIをKotlinで使うためのライブラリで、
 `News Api wrapper fOr KOtlin.`の略称です。
 
+対応しているJavaのバージョンは1.3~です。
+
 ## 使い方
 
 ### 1. build.gradleやMavenに記述（例はbuild.gradle.kts）
@@ -19,7 +21,7 @@ repositories{
 dependensies{
     
     //依存関係を定義
-    implementation("com.wsr:naoko:1.0.1")
+    implementation("com.wsr:naoko:1.0.3")
 }
 
 ```
