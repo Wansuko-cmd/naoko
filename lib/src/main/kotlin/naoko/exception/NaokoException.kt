@@ -7,8 +7,8 @@ package naoko.exception
  * status: エラーの内容
  */
 class NaokoException(
-    override val message: String,
-    val response: String,
+    override val message: String = "",
+    val response: String = "",
     val status: NaokoExceptionStatus
     ) : Exception()
 

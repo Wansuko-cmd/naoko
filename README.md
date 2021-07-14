@@ -21,7 +21,7 @@ repositories{
 dependensies{
     
     //依存関係を定義
-    implementation("com.wsr:naoko:1.0.3")
+    implementation("com.wsr:naoko:1.0.5")
 }
 
 ```
@@ -417,8 +417,8 @@ Naokoで通信を行った際にエラー（正しい値をNews API側に渡し�
  * status: エラーの内容
  */
 class NaokoException(
-    message: String,
-    response: String,
+    message: String = "",
+    response: String = "",
     status: NaokoExceptionStatus
 ) : Exception()
 ```
@@ -459,6 +459,21 @@ https://newsapi.org/docs/errors
 | RESPONSE_429 | 429エラーで、一日に使用可能な回数を超えてしまったときに発生 |
 | RESPONSE_500 | 500エラーで、News API側のサーバーがエラーを吐いたときに発生 |
 | UNDEFINED | 上記以外のステータスコード。詳しくは`response`を確認すること |
+
+
+これらのエラーをテストする際には以下のように記述してください
+```kotlin
+//RESPONSE_429をテストするとき
+throw NaokoException(status = NaokoExceptionStatus.RESPONSE_429)
+
+//メッセージ等を付与することも可能です
+throw NaokoException(
+    message = "message",
+    response = "response",
+    status = NaokoExceptionStatus.RESPONSE_429
+)
+
+```
 
 ## 最後に
 
