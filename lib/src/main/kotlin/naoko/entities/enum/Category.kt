@@ -2,6 +2,7 @@ package naoko.entities.enum
 
 import naoko.exception.NaokoException
 import naoko.exception.NaokoExceptionStatus
+import java.util.*
 
 enum class Category(val value: String) {
 
@@ -14,7 +15,7 @@ enum class Category(val value: String) {
     TECHNOLOGY("technology");
 
     companion object{
-        fun serializer(category: String) = when(category){
+        fun serializer(category: String) = when(category.lowercase(Locale.getDefault())){
             "business" -> BUSINESS
             "entertainment" -> ENTERTAINMENT
             "general" -> GENERAL

@@ -2,6 +2,7 @@ package naoko.entities.enum
 
 import naoko.exception.NaokoException
 import naoko.exception.NaokoExceptionStatus
+import java.util.*
 
 enum class Language(val value: String) {
     AR("ar"),
@@ -20,7 +21,7 @@ enum class Language(val value: String) {
     ZH("zh");
 
     companion object{
-        fun serializer(language: String) = when(language) {
+        fun serializer(language: String) = when(language.lowercase(Locale.getDefault())) {
             "ar" -> AR
             "de" -> DE
             "en" -> EN

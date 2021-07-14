@@ -2,6 +2,7 @@ package naoko.entities.enum
 
 import naoko.exception.NaokoException
 import naoko.exception.NaokoExceptionStatus
+import java.util.*
 
 enum class Country(val value: String) {
     AE("ae"),
@@ -60,7 +61,7 @@ enum class Country(val value: String) {
     ZA("za");
 
     companion object{
-        fun serializer(country: String): Country = when(country){
+        fun serializer(country: String): Country = when(country.lowercase(Locale.getDefault())){
             "ae" -> AE
             "ar" -> AR
             "at" -> AT
